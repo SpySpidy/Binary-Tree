@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
 
 int insert(int num)
 {
-    tree *temp, *parent;
+    tree *child, *parent;
 
     if (root==NULL)
     {
@@ -63,29 +63,29 @@ int insert(int num)
     }
     else
     {
-        temp=root;
-        while (temp!=NULL)
+        child=root;
+        while (child!=NULL)
         {
-            if (num <= temp->value)
+            if (num<=child->value)
             {
-                parent = temp;
-                temp=temp->leftside;
+                parent=child;
+                child=child->leftside;
             }
             else
             {
-                parent =temp;
-                temp=temp->rightside;
+                parent=child;
+                child=child->rightside;
 
             }
         }
-        temp = (tree *)malloc(sizeof(tree));
-        temp->value = num;
-        temp->leftside = NULL;
-        temp->rightside = NULL;
+        child=(tree *)malloc(sizeof(tree));
+        child->value=num;
+        child->leftside=NULL;
+        child->rightside=NULL;
         if(num <= parent->value)
-            parent->leftside = temp;
+            parent->leftside=child;
         else
-            parent->rightside = temp;
+            parent->rightside=child;
     }
 }
 
