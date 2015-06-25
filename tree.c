@@ -3,14 +3,23 @@
 struct Tree
 {
     int value;
+    int ht;
+    int lvl;
     struct Tree *leftside;
     struct Tree *rightside;
+    struct Tree *parentptr;
 };
 typedef struct Tree tree;
 tree *root;
 tree *tail;
+
+
 int insert(int);
 int search(int);
+//void display(tree *);
+int height_set(tree *);
+//void display();
+
 int main(int argc, char *argv[])
 {
     int flag,choice;
@@ -20,7 +29,7 @@ int main(int argc, char *argv[])
     while(1)
     {
         printf("What do you want to do?\n\n");
-        printf("1. Insert \n2. Search \n3. Exit\n");
+        printf("1. Insert \n2. Search \n3. Display\n4. Exit\n");
         scanf("%d", &choice);
 
         switch(choice)
@@ -44,8 +53,10 @@ int main(int argc, char *argv[])
             }
             break;
         case 3:
-            return 0;
+          //  display();
             break;
+        case 4:
+            return 0;
         }
     }
 }
@@ -60,6 +71,8 @@ int insert(int num)
         root->value=num;
         root->leftside=NULL;
         root->rightside=NULL;
+        root->parentptr=NULL;
+        root->lvl=0;
     }
     else
     {
@@ -82,10 +95,13 @@ int insert(int num)
         child->value=num;
         child->leftside=NULL;
         child->rightside=NULL;
+        child->parentptr=parent;
+        child->lvl=child->parentptr->lvl+1;
         if(num <= parent->value)
             parent->leftside=child;
         else
             parent->rightside=child;
+            height_set(child);
     }
 }
 
@@ -112,3 +128,44 @@ int search(int value)
     }
     return 0;
 }
+/*void display(tree *ptr)
+{
+    if (ptr)
+    {
+        printf("%d\n",ptr->value);
+        display(ptr->leftside);
+        display(ptr->rightside);
+    }
+}*/
+int height_set(tree *temp)
+{
+    int lh,rh;
+    if(temp==NULL)
+        return(0);
+    if(temp->leftside==NULL)
+        lh=0;
+    else
+        lh=temp->leftside->ht;
+    if(temp->rightside==NULL)
+        rh=0;
+    else
+        rh=temp->rightside->ht;
+    if(lh>rh)
+    {
+        temp->ht=lh+1;
+    }
+    else
+    {
+        temp->ht=rh+1;
+    }
+    height_set(temp->parentptr);
+}
+/*void display()
+{
+    int i,j,c=root->ht;
+    for(i=0;i<c;i++)
+    {
+
+    }
+}
+*/
